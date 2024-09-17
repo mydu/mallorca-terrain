@@ -1,9 +1,10 @@
 <script>
+  import { Canvas } from '@threlte/core'
+  import Scene from '$lib/components/Elevation.svelte';
+
 </script>
-
-<div>
-  <a href="/scatterplot">scatterplot</a>
+<div class="flex h-[100vh]">
+  <Canvas>
+    <Scene />
+  </Canvas>
 </div>
-
-<style>
-</style>
