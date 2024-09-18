@@ -1,22 +1,37 @@
 <script>
   import { T } from '@threlte/core';
-  import { OrbitControls } from '@threlte/extras';
+  import { Align, OrbitControls } from '@threlte/extras'
   import GeoTIFF, { fromUrl, fromUrls, fromArrayBuffer, fromBlob } from 'geotiff';
 	import { onMount } from 'svelte';
 	import { Plane } from 'three';
   
   let image = {};
+  let positions;
 
   onMount(async () => {
     const rawTiff = await fromUrl('data/mallorca90.tif');
     const tiff = await rawTiff;
     const tifImage = await rawTiff.getImage();
 
-    image = {
-        width: tifImage.getWidth(),
-        height: tifImage.getHeight(),
-      };
-    const data = await image.readRasters();
+
+    const width = tifImage.getWidth();
+    const height= tifImage.getHeight();
+    
+
+    const data = await tifImage.readRasters();
+
+    const t = data[0];
+    const length = t.length;
+    positions = new Float32Array(length * 3);
+
+    for (let p = 0; p < length; ++p) {
+      // let c = colourScale(t[p]);
+      let x = p % width;
+      let y = p / width;
+      positions[p * 3] = x
+      positions[p * 3 + 1] = y;
+      positions[p * 3 + 2] = t[p];
+    }
   });
 
 </script>
@@ -33,8 +48,27 @@
         <T.MeshStandardMaterial color={'#B392AC'} />
     </T.Mesh>
 {/each} -->
+{#if positions}
+  <Align>
+    <T.Points>
+    <T.BufferGeometry>
+        <T.BufferAttribute
+          args={[positions, 3]}
+          attach={(parent, self) => {
+              parent.setAttribute('position', self)
+              return () => {
+              // cleanup function called when ref changes or the component unmounts
+              // https://threlte.xyz/docs/reference/core/t#attach
+              }
+          }}
+        />
+    </T.BufferGeometry>
+    <T.PointsMaterial size={0.25} />
+    </T.Points>
+  </Align>
+{/if}
 <T.Mesh>
-  <T.PlaneGeometry args={[image.width, image.height]} />
+  <!-- <T.PlaneGeometry args={[image.width, image.height]} /> -->
   <T.MeshStandardMaterial color={"#3dbb9f"}  transparent opacity={0.8} />
 </T.Mesh>
 <T.PerspectiveCamera
