@@ -1,13 +1,17 @@
 <script>
   import { T } from '@threlte/core';
-  import { Align, OrbitControls } from '@threlte/extras'
+  import { Align, OrbitControls } from '@threlte/extras';
+  import { AutoColliders, Debug } from '@threlte/rapier'
+  import { DEG2RAD } from 'three/src/math/MathUtils.js'
+
   import GeoTIFF, { fromUrl, fromUrls, fromArrayBuffer, fromBlob } from 'geotiff';
 	import { onMount } from 'svelte';
-	import { Plane } from 'three';
+	import { PlaneGeometry } from 'three';
   
   let image = {};
   let positions;
 
+ 
   onMount(async () => {
     const rawTiff = await fromUrl('data/mallorca90.tif');
     const tiff = await rawTiff;
@@ -16,7 +20,14 @@
 
     const width = tifImage.getWidth();
     const height= tifImage.getHeight();
-    
+    image = {
+      width,
+      height
+    }
+
+    // const geometry = new PlaneGeometry(1,1, width-1, height-1)
+    // const vertices = geometry.getAttribute('position').array;
+    // console.log(vertices)
 
     const data = await tifImage.readRasters();
 
@@ -30,7 +41,7 @@
       let y = p / width;
       positions[p * 3] = x
       positions[p * 3 + 1] = y;
-      positions[p * 3 + 2] = t[p];
+      positions[p * 3 + 2] = t[p]/2;
     }
   });
 
@@ -49,7 +60,7 @@
     </T.Mesh>
 {/each} -->
 {#if positions}
-  <Align>
+  <!-- <Align>
     <T.Points>
     <T.BufferGeometry>
         <T.BufferAttribute
@@ -63,28 +74,42 @@
           }}
         />
     </T.BufferGeometry>
-    <T.PointsMaterial size={0.25} />
+    <T.PointsMaterial size={1} />
     </T.Points>
-  </Align>
+  </Align> -->
+  <!-- <T.Mesh name="terrain">
+    <T.PlaneGeometry
+      args={[1,1,image.width-1, image.height-1]} />
+    <T.MeshBasicMaterial 
+      color={"#3dbb9f"} 
+      wireframe={true}
+      transparent 
+       />
+  </T.Mesh> -->
 {/if}
-<T.Mesh>
-  <!-- <T.PlaneGeometry args={[image.width, image.height]} /> -->
-  <T.MeshStandardMaterial color={"#3dbb9f"}  transparent opacity={0.8} />
-</T.Mesh>
+
 <T.PerspectiveCamera
     makeDefault
-    position={[22, 15,22]}
-    on:create={({ ref }) => {
-        ref.lookAt(0, 0, 4);
-    }}>	
+    position.y={5}
+    position.z={10}
+    lookAt.y={2}>
     <OrbitControls
-      enableDamping
-      target={[0, 4, 0]}
+      autoRotate={false}
+      enableZoom={true}
+      maxPolarAngle={DEG2RAD * 80}
     />
 </T.PerspectiveCamera>
 <T.AmbientLight intensity={0.2} />
 <T.DirectionalLight castShadow position={[10, 20, 5]} />
 
+<!-- <AutoColliders shape="trimesh">
+  <T.Mesh
+    {geometry}
+    rotation.x={DEG2RAD * -90}
+  >
+    <T.MeshStandardMaterial />
+  </T.Mesh>
+</AutoColliders> -->
 <!-- <T.Mesh receiveShadow rotation.x={-90 * (Math.PI / 180)}>
 	<T.CircleGeometry args={[30, 72]} />
 	<T.MeshStandardMaterial />
