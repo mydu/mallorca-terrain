@@ -1,117 +1,56 @@
 <script>
-  import { T } from '@threlte/core';
+  import { Canvas, T } from '@threlte/core'
+  import { DEG2RAD } from 'three/src/math/MathUtils'
+  import * as THREE from 'three'
   import { Align, OrbitControls } from '@threlte/extras';
-  import { AutoColliders, Debug } from '@threlte/rapier'
-  import { DEG2RAD } from 'three/src/math/MathUtils.js'
 
-  import GeoTIFF, { fromUrl, fromUrls, fromArrayBuffer, fromBlob } from 'geotiff';
-	import { onMount } from 'svelte';
-	import { PlaneGeometry } from 'three';
-  
-  let image = {};
-  let positions;
+  // Terrain parameters
+export let width ;
+export let height;
+export let heightMap;
 
- 
-  onMount(async () => {
-    const rawTiff = await fromUrl('data/mallorca90.tif');
-    const tiff = await rawTiff;
-    const tifImage = await rawTiff.getImage();
+  // // Create height map
+  // function createHeightMap() {
+  //   const size = segments + 1
+  //   const data = new Float32Array(size * size)
+  //   for (let i = 0; i < size; i++) {
+  //     for (let j = 0; j < size; j++) {
+  //       const index = i * size + j
+  //       // Simple noise function for demonstration
+  //       data[index] = Math.sin(i * 0.2) * Math.cos(j * 0.2) * 2
+  //     }
+  //   }
+  //   return data
+  // }
+
+  // const heightMap = createHeightMap()
 
 
-    const width = tifImage.getWidth();
-    const height= tifImage.getHeight();
-    image = {
-      width,
-      height
-    }
+  // Create geometry
+$: geometry = new THREE.PlaneGeometry(10,10, width-1, height-1);
+$: positionAttribute = geometry.getAttribute('position')
 
-    // const geometry = new PlaneGeometry(1,1, width-1, height-1)
-    // const vertices = geometry.getAttribute('position').array;
-    // console.log(vertices)
+$:  for (let i = 0; i < positionAttribute.count; i++) {
+    positionAttribute.setZ(i, heightMap[i]/1000)
+  }
 
-    const data = await tifImage.readRasters();
+ $: geometry.computeVertexNormals()
 
-    const t = data[0];
-    const length = t.length;
-    positions = new Float32Array(length * 3);
-
-    for (let p = 0; p < length; ++p) {
-      // let c = colourScale(t[p]);
-      let x = p % width;
-      let y = p / width;
-      positions[p * 3] = x
-      positions[p * 3 + 1] = y;
-      positions[p * 3 + 2] = t[p]/2;
-    }
-  });
+  // Material
 
 </script>
-<!-- 
-{#each data as d}
-    <T.Mesh
-        position.x={xScale(d.x)}
-        position.z={zScale(d.z)}
-        position.y={yScale(d.y)}
-        scale.y={1}
-        castShadow
-    >
-        <T.BoxGeometry />
-        <T.MeshStandardMaterial color={'#B392AC'} />
-    </T.Mesh>
-{/each} -->
-{#if positions}
-  <!-- <Align>
-    <T.Points>
-    <T.BufferGeometry>
-        <T.BufferAttribute
-          args={[positions, 3]}
-          attach={(parent, self) => {
-              parent.setAttribute('position', self)
-              return () => {
-              // cleanup function called when ref changes or the component unmounts
-              // https://threlte.xyz/docs/reference/core/t#attach
-              }
-          }}
-        />
-    </T.BufferGeometry>
-    <T.PointsMaterial size={1} />
-    </T.Points>
-  </Align> -->
-  <!-- <T.Mesh name="terrain">
-    <T.PlaneGeometry
-      args={[1,1,image.width-1, image.height-1]} />
-    <T.MeshBasicMaterial 
-      color={"#3dbb9f"} 
-      wireframe={true}
-      transparent 
-       />
-  </T.Mesh> -->
-{/if}
 
+<T.Mesh 
+  geometry={geometry} 
+  rotation.x={-90 * DEG2RAD}
+>
+  <T.MeshStandardMaterial color="#ffffff" wireframe={true} flatShading={true} transparent opacity={0.5} />
+</T.Mesh>
 <T.PerspectiveCamera
-    makeDefault
-    position.y={5}
-    position.z={10}
-    lookAt.y={2}>
-    <OrbitControls
-      autoRotate={false}
-      enableZoom={true}
-      maxPolarAngle={DEG2RAD * 80}
-    />
+  makeDefault
+  position={[0, 10, 90]} fov={3}
+>
+  <OrbitControls autoRotate={false} enableZoom={true} />
 </T.PerspectiveCamera>
-<T.AmbientLight intensity={0.2} />
-<T.DirectionalLight castShadow position={[10, 20, 5]} />
-
-<!-- <AutoColliders shape="trimesh">
-  <T.Mesh
-    {geometry}
-    rotation.x={DEG2RAD * -90}
-  >
-    <T.MeshStandardMaterial />
-  </T.Mesh>
-</AutoColliders> -->
-<!-- <T.Mesh receiveShadow rotation.x={-90 * (Math.PI / 180)}>
-	<T.CircleGeometry args={[30, 72]} />
-	<T.MeshStandardMaterial />
-</T.Mesh> -->
-
+<T.AmbientLight intensity={0.5} />
+<T.DirectionalLight position={[10, 10, 10]} intensity={0.5} />
