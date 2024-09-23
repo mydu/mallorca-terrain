@@ -7,6 +7,11 @@
   let uploadStatus = '';
   let tiffData = null;
 
+  let textColor = '#cccccc'; // Default color
+  let bgColor = '#000000'; // Default color
+  let heightScale = 1; // Default height scale
+
+
   async function handleUpload() {
 
     if (!tifFile) {
@@ -37,10 +42,15 @@
   }
 </script>
 
-<div class="flex h-[100vh] bg-black">
+<div class="flex h-[100vh]" style="background-color: {bgColor}">
   <Canvas>
     {#if tiffData}
-      <Scene width={tiffData.width} height={tiffData.height} heightMap={tiffData.rasters[0]} />
+      <Scene 
+        width={tiffData.width} 
+        height={tiffData.height} 
+        {heightScale}
+        heightMap={tiffData.rasters[0]} 
+        color={textColor} />
     {/if}
   </Canvas>
 </div>
@@ -53,6 +63,19 @@
   {/if}
   {#if tiffData}
     <p>Width: {tiffData.width}, Height: {tiffData.height}</p>
-    <!-- You can display or process tiffData.rasters here -->
+    <!-- You an display or process tiffData.rasters here -->
   {/if}
+  <!-- <div>
+    <span>Texture Color</span>
+    <input type="color" bind:value={textColor} />
+    <span>Background Color</span>
+    <input type="color" bind:value={bgColor} />
+    <div>
+      <span>Height Scale</span>
+      <input type="range" min="1" max="4" step="1" bind:value={heightScale} />
+    </div>
+  </div> -->
 </div>
+
+
+
