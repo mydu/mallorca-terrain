@@ -10,6 +10,7 @@ export let height;
 export let heightMap;
 export let color;
 export let heightScale;
+
 // function hexToRgb(hex) {
 //   const r = parseInt(hex.slice(1, 3), 16);
 //   const g = parseInt(hex.slice(3, 5), 16);
@@ -18,8 +19,14 @@ export let heightScale;
 // }
 // $: rgbColor = hexToRgb(color);
 
-// $: console.log(rgbColor)
-
+function hexToVector3(hex) {
+  hex = hex.replace(/^#/, '');
+  const bigint = parseInt(hex, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return new THREE.Vector3(r / 255, g / 255, b / 255);
+}
   // // Create height map
   // function createHeightMap() {
   //   const size = segments + 1
@@ -59,11 +66,12 @@ $:  for (let i = 0; i < positionAttribute.count; i++) {
 
   const fragmentShader = `
     varying float vHeight;
+    uniform vec3 color;
     void main() {
       if (vHeight == 0.0) {
         discard;
       }
-      gl_FragColor = vec4(1.0, 1.0, 1.0, 0.5);
+      gl_FragColor = vec4(color,0.3);
     }
   `;
 
@@ -93,7 +101,7 @@ $:  for (let i = 0; i < positionAttribute.count; i++) {
     vertexShader={vertexShader}
     fragmentShader={fragmentShader}
     uniforms={{
-      uColor: new THREE.Color("#ff00ff")
+      color: {value: hexToVector3(color)}
     }}
     transparent={true}
     wireframe={true}
