@@ -10,6 +10,7 @@ export let height;
 export let heightMap;
 export let color;
 export let heightScale;
+export let isAnimated;
 
 // function hexToRgb(hex) {
 //   const r = parseInt(hex.slice(1, 3), 16);
@@ -75,22 +76,22 @@ $:  for (let i = 0; i < positionAttribute.count; i++) {
     }
   `;
 
-  $: material = new THREE.ShaderMaterial({
-    vertexShader,
-    fragmentShader,
-    uniforms: {
-      uColor: { value: new THREE.Color(0x2260ff) }
-    },
-    transparent: true,
-    wireframe: true,
-    flatShading: true
-  });
+  // $: material = new THREE.ShaderMaterial({
+  //   vertexShader,
+  //   fragmentShader,
+  //   uniforms: {
+  //     uColor: { value: new THREE.Color(0x2260ff) }
+  //   },
+  //   transparent: true,
+  //   wireframe: true,
+  //   flatShading: true
+  // });
 
     // Update material color when color changes
   // Update material color when color changes
-  $: if (material) {
-    material.uniforms.uColor.value.set(color);
-  }
+  // $: if (material) {
+  //   material.uniforms.uColor.value.set(color);
+  // }
 </script>
 
 <T.Mesh 
@@ -118,7 +119,7 @@ $:  for (let i = 0; i < positionAttribute.count; i++) {
   makeDefault
   position={[0, 10, 90]} fov={3}
 >
-  <OrbitControls autoRotate={true} enableZoom={true} />
+  <OrbitControls autoRotate={isAnimated} enableZoom={true} />
 </T.PerspectiveCamera>
 <T.AmbientLight intensity={0.5} />
 <T.DirectionalLight position={[10, 10, 10]} intensity={0.5} />

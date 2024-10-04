@@ -11,6 +11,7 @@
   let bgColor = '#000000'; // Default color
   let heightScale = 1; // Default height scale
 
+  let isAnimated = true;
 
   async function handleUpload() {
 
@@ -49,6 +50,7 @@
         width={tiffData.width} 
         height={tiffData.height} 
         {heightScale}
+        isAnimated={isAnimated}
         heightMap={tiffData.rasters[0]} 
         color={textColor} />
     {/if}
@@ -75,6 +77,8 @@
       <input type="range" min="1" max="4" step="1" bind:value={heightScale} />
     </div> -->
   </div>
+  <span>animate scene</span>
+  <input type="checkbox" bind:checked={isAnimated} />
 </div>
 
 
