@@ -1,16 +1,25 @@
 <script>
     import { MapLibre, GeoJSON, FillExtrusionLayer} from 'svelte-maplibre';
     import mallorca from '$data/mallorcaPop.json';
-
+    let selectedYear = 2023;
 </script>
-
-  <MapLibre
+<div class="m-auto relative z-10 w-60">
+  <input
+    type="range"
+    min="2000"
+    max="2023"
+    bind:value={selectedYear}
+    class="w-full"
+  />
+  <p>{selectedYear}</p>
+</div>
+<MapLibre
   style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
   class=""
   standardControls
   pitch={30}
   center={[2.7512019897940436, 39.79629267511315]}
-  zoom={4}
+  zoom={8}
 >
   <GeoJSON data={mallorca}>
     <FillExtrusionLayer
@@ -20,7 +29,7 @@
             ['linear'],
             ['zoom'],
             14,
-            0,
+            1,
             14.05,
             ['get', 'render_min_height'],
         ],
@@ -29,14 +38,14 @@
           'interpolate',
           ['linear'],
           // Population density
-          ['/', ['get', '2023'],20],
+          ['/', ['get', ''+selectedYear],20],
           0,
           '#0a0',
           2000,
           '#a00',
         ],
         'fill-extrusion-opacity': 0.6,
-        'fill-extrusion-height': ['/', ['get', '2023'], 20],
+        'fill-extrusion-height': ['/', ['get', ''+selectedYear], 20],
       }}
       beforeLayerType="symbol"
     >
