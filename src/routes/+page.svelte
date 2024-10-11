@@ -7,9 +7,9 @@
   let uploadStatus = '';
   let tiffData = null;
 
-  let textColor = '#0000cc'; // Default color
+  let textColor = '#ffffff'; // Default color
   let bgColor = '#000000'; // Default color
-  let heightScale = 1; // Default height scale
+  let vertaxScale = 0.5; // Default height scale
 
   let isAnimated = true;
 
@@ -49,7 +49,7 @@
       <Scene 
         width={tiffData.width} 
         height={tiffData.height} 
-        {heightScale}
+        wireframeDensity = {vertaxScale}
         isAnimated={isAnimated}
         heightMap={tiffData.rasters[0]} 
         color={textColor} />
@@ -72,10 +72,11 @@
     <input type="color" bind:value={textColor} />
     <span>Background Color</span>
     <input type="color" bind:value={bgColor} />
-    <!-- <div>
-      <span>Height Scale</span>
-      <input type="range" min="1" max="4" step="1" bind:value={heightScale} />
-    </div> -->
+    <div>
+      <span>wireframe density</span>
+      <input type="range" min="0.1" max="1" step="0.1" bind:value={vertaxScale} />
+      <span>{vertaxScale}</span>
+    </div>
   </div>
   <span>animate scene</span>
   <input type="checkbox" bind:checked={isAnimated} />

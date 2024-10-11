@@ -9,8 +9,11 @@ export let width ;
 export let height;
 export let heightMap;
 export let color;
-export let heightScale;
+// export let heightScale;
 export let isAnimated;
+let heightScale = 1;
+export let wireframeDensity = 0.5;
+
 
 // function hexToRgb(hex) {
 //   const r = parseInt(hex.slice(1, 3), 16);
@@ -46,14 +49,40 @@ function hexToVector3(hex) {
 
 
   // Create geometry
-$: geometry = new THREE.PlaneGeometry(10, 10, width-1, height-1);
-$: positionAttribute = geometry.getAttribute('position')
+// $: geometry = new THREE.PlaneGeometry(10, 10, width-1, height-1);
+  // Modify the geometry creation
+  // $: geometry = new THREE.PlaneGeometry(10, 10, 
+  //   Math.floor((width - 1) * wireframeDensity), 
+  //   Math.floor((height - 1) * wireframeDensity)
+  // );
 
-$:  for (let i = 0; i < positionAttribute.count; i++) {
-    positionAttribute.setZ(i, heightMap[i] * heightScale /1000)
+// $: positionAttribute = geometry.getAttribute('position')
+
+
+  $: geometryWidth = Math.max(2, Math.floor((width - 1) * wireframeDensity) + 1);
+  $: geometryHeight = Math.max(2, Math.floor((height - 1) * wireframeDensity) + 1);
+
+  $: geometry = new THREE.PlaneGeometry(10, 10, geometryWidth - 1, geometryHeight - 1);
+
+  $: {
+    const positionAttribute = geometry.getAttribute('position');
+    for (let i = 0; i < geometryHeight; i++) {
+      for (let j = 0; j < geometryWidth; j++) {
+        const index = i * geometryWidth + j;
+        const heightMapX = Math.floor(j / wireframeDensity);
+        const heightMapY = Math.floor(i / wireframeDensity);
+        const heightMapIndex = heightMapY * width + heightMapX;
+        const height = (heightMap[heightMapIndex] || 0) * heightScale / 1000;
+        positionAttribute.setZ(index, height);
+      }
+    }
+    geometry.computeVertexNormals();
   }
+// $:  for (let i = 0; i < positionAttribute.count; i++) {
+//     positionAttribute.setZ(i, heightMap[i] * heightScale /1000)
+//   }
 
- $: geometry.computeVertexNormals()
+//  $: geometry.computeVertexNormals()
 
   // Material
   // Custom shader material
