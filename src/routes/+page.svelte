@@ -1,7 +1,8 @@
 <script>
-  import { Canvas } from '@threlte/core'
+  import { Canvas} from '@threlte/core'
   import Scene from '$lib/components/Elevation.svelte';
   import { fromArrayBuffer } from 'geotiff';
+  import { STLExporter } from 'three/addons/exporters/STLExporter.js';
 
   let tifFile;
   let uploadStatus = '';
@@ -41,12 +42,23 @@
       tiffData = null;
     }
   }
+  let blob;
+  let scene;
+
+  function exportSTL() {
+    const exporter = new STLExporter()
+    const stl = exporter.parse(scene)
+    
+    // Create a Blob with the STL data
+    blob = new Blob([stl], { type: 'application/octet-stream' })
+}
 </script>
 
 <div class="flex h-[100vh]" style="background-color: {bgColor}">
   <Canvas>
     {#if tiffData}
       <Scene 
+        bind:scene={scene}
         width={tiffData.width} 
         height={tiffData.height} 
         wireframeDensity = {vertaxScale}
@@ -80,6 +92,10 @@
   </div>
   <span>animate scene</span>
   <input type="checkbox" bind:checked={isAnimated} />
+  <button class="invisible" on:click={exportSTL}>Export STL</button>
+  {#if blob}
+    <a href={URL.createObjectURL(blob)} download="terrain.stl">download stl</a>
+  {/if}
 </div>
 
 

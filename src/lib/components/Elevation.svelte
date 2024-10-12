@@ -3,14 +3,15 @@
   import { DEG2RAD } from 'three/src/math/MathUtils'
   import * as THREE from 'three'
   import { Align, OrbitControls } from '@threlte/extras';
-
-  // Terrain parameters
+  
+// Terrain parameters
 export let width ;
 export let height;
 export let heightMap;
 export let color;
 // export let heightScale;
 export let isAnimated;
+export let scene;
 let heightScale = 1;
 export let wireframeDensity = 0.5;
 
@@ -57,6 +58,7 @@ function hexToVector3(hex) {
   // );
 
 // $: positionAttribute = geometry.getAttribute('position')
+
 
 
   $: geometryWidth = Math.max(2, Math.floor((width - 1) * wireframeDensity) + 1);
@@ -122,28 +124,29 @@ function hexToVector3(hex) {
   //   material.uniforms.uColor.value.set(color);
   // }
 </script>
-
-<T.Mesh 
-  geometry={geometry} 
-  rotation.x={-90 * DEG2RAD}
->
-  <T.ShaderMaterial
-    vertexShader={vertexShader}
-    fragmentShader={fragmentShader}
-    uniforms={{
-      color: {value: hexToVector3(color)}
-    }}
-    transparent={true}
-    wireframe={true}
-    flatShading={true}
-   />
-
-  <!-- <T.MeshStandardMaterial 
-    color={color} 
-    wireframe={true} 
-    flatShading={true} 
-    transparent opacity={0.5} /> -->
-</T.Mesh>
+<T.Scene bind:ref={scene}>
+  <T.Mesh 
+    geometry={geometry} 
+    rotation.x={-90 * DEG2RAD}
+  >
+    <T.ShaderMaterial
+      vertexShader={vertexShader}
+      fragmentShader={fragmentShader}
+      uniforms={{
+        color: {value: hexToVector3(color)}
+      }}
+      transparent={true}
+      wireframe={true}
+      flatShading={true}
+     />
+  
+    <!-- <T.MeshStandardMaterial 
+      color={color} 
+      wireframe={true} 
+      flatShading={true} 
+      transparent opacity={0.5} /> -->
+  </T.Mesh>
+</T.Scene>
 <T.PerspectiveCamera
   makeDefault
   position={[0, 10, 90]} fov={3}
