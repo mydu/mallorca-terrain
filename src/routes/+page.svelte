@@ -13,6 +13,7 @@
   let vertaxScale = 0.5; // Default height scale
 
   let isAnimated = true;
+  let rotateSpeed = 0.5;
 
   async function handleUpload() {
 
@@ -63,6 +64,7 @@
         height={tiffData.height} 
         wireframeDensity = {vertaxScale}
         isAnimated={isAnimated}
+        {rotateSpeed}
         heightMap={tiffData.rasters[0]} 
         color={textColor} />
     {/if}
@@ -86,13 +88,16 @@
     <input type="color" bind:value={bgColor} />
     <div>
       <span>wireframe density</span>
-      <input type="range" min="0.1" max="1" step="0.1" bind:value={vertaxScale} />
+      <input type="range" min="0.05" max="1" step="0.05" bind:value={vertaxScale} />
       <span>{vertaxScale}</span>
     </div>
   </div>
   <span>animate scene</span>
   <input type="checkbox" bind:checked={isAnimated} />
-  <button class="invisible" on:click={exportSTL}>Export STL</button>
+  <span>rotate speed</span>
+  <input type="range" min="0.1" max="1" step="0.1" bind:value={rotateSpeed}  />
+  <span>{rotateSpeed}</span>
+  <!-- <button on:click={exportSTL}>Export STL</button> -->
   {#if blob}
     <a href={URL.createObjectURL(blob)} download="terrain.stl">download stl</a>
   {/if}

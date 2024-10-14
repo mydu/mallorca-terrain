@@ -11,10 +11,10 @@ export let heightMap;
 export let color;
 // export let heightScale;
 export let isAnimated;
+export let rotateSpeed;
 export let scene;
 let heightScale = 1;
 export let wireframeDensity = 0.5;
-
 
 // function hexToRgb(hex) {
 //   const r = parseInt(hex.slice(1, 3), 16);
@@ -151,7 +151,10 @@ function hexToVector3(hex) {
   makeDefault
   position={[0, 10, 90]} fov={3}
 >
-  <OrbitControls autoRotate={isAnimated} enableZoom={true} />
+  <OrbitControls 
+    autoRotateSpeed={rotateSpeed}
+    autoRotate={isAnimated} 
+    enableZoom={true} />
 </T.PerspectiveCamera>
 <T.AmbientLight intensity={0.5} />
 <T.DirectionalLight position={[10, 10, 10]} intensity={0.5} />
