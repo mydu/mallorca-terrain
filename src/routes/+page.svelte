@@ -11,7 +11,6 @@
   let textColor = '#ffffff'; // Default color
   let bgColor = '#000000'; // Default color
   let vertaxScale = 0.5; // Default height scale
-
   let isAnimated = true;
   let rotateSpeed = 0.5;
 
