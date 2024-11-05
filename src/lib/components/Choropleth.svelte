@@ -7,8 +7,6 @@
     import { Shape, ShapeGeometry, MeshBasicMaterial, Mesh, Group } from "three";
     export let geojson;
 
-    console.log(geojson);
-
     function createPolygonShape(feature) {
         
         const shape = new Shape();
@@ -36,8 +34,6 @@
 
         return shape;
     }
-    console.log('here')
-
 </script>
 
 <!-- <T.Scene >
@@ -48,6 +44,8 @@
     </T.Mesh>
     {/each}
 </T.Scene> -->
+
+
 <T.PerspectiveCamera
   makeDefault
   position={[0, 10, 90]} fov={3}
@@ -57,3 +55,6 @@
 </T.PerspectiveCamera>
 <T.AmbientLight intensity={0.5} />
 <T.DirectionalLight position={[10, 10, 10]} intensity={0.5} />
+
+
+

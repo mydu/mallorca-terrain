@@ -1,9 +1,13 @@
 <script>
     import { Canvas } from "@threlte/core";
     import Scene from '$lib/components/Choropleth.svelte';
+    import geoMap from '$data/mallorcaChoropleth.json';
+
     import { onMount } from "svelte";
     import * as d3 from "d3";
-
+	import ScenePolygon from "$lib/components/ScenePolygon.svelte";
+    let width;
+    let height;
 //     function createPolygonShape(geoJson) {
 //         const shape = new Shape();
 
@@ -32,18 +36,14 @@
 //         return shape;
 //     }
 
-// let mesh;
-let data;
-
-onMount(async () => {
-    data= await d3.csv('data/population.csv');
-    console.log(data)
-});
 
 </script>
 
-<div class="w-full h-screen">
+<div class="w-full h-screen" bind:clientWidth={width} bind:clientHeight={height}>
     <Canvas>
-
+        <!-- <Scene geojson={geoMap} /> -->
+         {#if width>0 && height>0}
+            <ScenePolygon geojson={geoMap} {width} {height}/>
+         {/if}
     </Canvas>
 </div>
