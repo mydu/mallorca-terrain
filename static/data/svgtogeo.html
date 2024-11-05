@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" >
+    <meta charset="UTF-8" />
+    <title>SVG to GeoJSON test</title>
+    <script src="svg-to-geojson.min.js"></script>
+    <style>
+        body {
+            font-family: Arial;
+        }
+        #demolink {
+            text-decoration: none;
+            border: 1px solid blue;
+            background-color: blue;
+            color: white;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>SVG to GeoJSON example</h1>
+    <h2>The example SVG</h2>
+    <svg id="mysvg" width="429" height="334" viewBox="0 0 429 334" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g id="vectorId">
+        <path id="Pollen&#195;&#167;a" d="M329 0.299988H302L293 9.29999L284 18.3H275H266H248L239 27.3H230H221L212 36.3H221V45.3V54.3L230 63.3V72.3L239 63.3H248L257 72.3H266V63.3V54.3L275 45.3V36.3V27.3H284L293 18.3H302L311 9.29999H320L329 0.299988Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Alc&#195;&#186;dia" d="M302 45.3H275L266 54.3V72.3L284 81.3L293 72.3V63.3H311L320 45.3H311V36.3L302 45.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Campanet" d="M257 72.3L248 63.3H239L230 72.3H221V81.3L230 90.3L239 99.3L248 90.3V81.3L257 72.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Sa Pobla" d="M266 72.3L284 81.3L275 90.3V99.3L266 108.3H257L248 117.3H239L248 108.3V99.3L257 90.3H248V81.3L257 72.3H266Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="B&#195;&#186;ger" d="M257 90.3L248 99.3V108.3L239 99.3L248 90.3H257Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Selva" d="M221 72.3H212L203 81.3V90.3L212 99.3V108.3H203V117.3H212L221 108.3H230L239 99.3L221 81.3V72.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Escorca" d="M158 108.3V99.3L167 90.3V81.3L158 72.3L167 63.3L176 54.3H185H194L203 45.3L212 36.3H221V54.3L230 63.3V72.3H212L203 81.3L194 90.3L185 99.3H176H167L158 108.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Manacor" d="M203 81.3V90.3L212 99.3V108.3H203V117.3L185 108.3L194 99.3H185L203 81.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Alar&#195;&#179;" d="M158 126.3L167 117.3L176 108.3V99.3H194L185 108.3V117.3L194 126.3L185 135.3L176 144.3L167 135.3L158 126.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Lloseta" d="M185 108.3V117.3L194 126.3L203 135.3H212L203 126.3H212V117.3H203L185 108.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Fornalutx" d="M158 72.3H149L158 81.3L149 90.3V99.3H158L167 90.3V81.3L158 72.3Z" stroke="#FF6DDC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="S&#195;&#179;ller" d="M122 99.3L131 108.3V117.3H140L149 108.3H158V99.3H149V90.3L158 81.3L149 72.3L140 81.3L131 90.3L122 99.3Z" stroke="#FF6DDC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Dei&#195;&#160;" d="M131 117.3V126.3L122 117.3L113 126.3V117.3V108.3H122V99.3L131 108.3V117.3Z" stroke="#FF6DDC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Bunyola" d="M176 99.3V108.3L158 126.3V135.3V153.3H149L140 162.3L131 153.3L122 144.3V135.3L131 126.3V117.3H140L149 108.3H158L167 99.3H176Z" stroke="#FF6DDC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Valldemossa" d="M104 117.3V126.3L95 135.3H86L95 144.3L104 135.3V144.3H113L122 153.3H131L122 144.3V135.3L131 126.3L122 117.3L113 126.3V117.3H104Z" stroke="#FF6DDC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Banyalbufar" d="M86 135.3H77V144.3L68 153.3L77 162.3V153.3H86L95 144.3L86 135.3Z" stroke="#FF6DDC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Andratx" d="M50 162.3L32 180.3H23L14 189.3H4.99999L0.799988 207.3L15.4 190.7L23 207.3L32 216.3V225.3L41 216.3H50L59 207.3L50 198.3L59 189.3V180.3V171.3L50 162.3Z" stroke="#8424B2" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Estellencs" d="M77 162.3L68 171.3H59L50 162.3H59L68 153.3L77 162.3Z" stroke="#FF6DDC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Calvi&#195;&#160;" d="M59 171.3V189.3L50 198.3L59 207.3L50 216.3V225.3L59 216.3L68 225.3L59 234.3L68 243.3L77 252.3H86V243.3V234.3L95 225.3V216.3H104L113 207.3H104V198.3L95 189.3L104 180.3H95L86 189.3H77L68 180.3V171.3H59Z" stroke="#8424B2" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Esporles" d="M104 135.3L86 153.3L95 171.3L104 162.3H122L131 153.3H122L113 144.3H104V135.3Z" stroke="#FF6DDC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Puigpunyent" d="M86 153.3H77V162.3L68 171.3V180.3L77 189.3H86L95 180.3H104V171.3H95L86 153.3Z" stroke="#FF6DDC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Binissalem" d="M194 126.3L185 135.3L194 144.3L203 153.3H212V144.3L221 135.3H212H203L194 126.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Consell" d="M184.909 135.248L175.929 144.228L193.96 162.259L202.94 153.279L184.909 135.248Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Algaida" d="M239 171.3H212L203 180.3H194L203 189.3L194 198.3L203 207.3L212 216.3H221H230H239L248 207.3V198.3L239 189.3V180.3V171.3Z" stroke="#E7005B" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Lloret" d="M239 162.3V171.3V180.3L248 171.3H257H266L257 162.3H248V153.3H239V162.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Llucmajor" d="M194 198.3L167 225.3L158 234.3V243.3L167 252.3V261.3V270.3L176 279.3L185 288.3H194L203 297.3V288.3H239V261.3L248 252.3L239 243.3L248 234.3V225.3L239 216.3H230H212L194 198.3Z" stroke="#FF6DDC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Campos" d="M293 261.3V270.3L284 279.3L275 288.3L266 297.3L257 306.3V297.3L248 288.3H239V261.3L248 252.3L239 243.3H257L266 234.3H275L284 225.3V234.3L293 243.3V252.3V261.3Z" stroke="#0000DC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Ses Salines" d="M293 270.3L257 306.3H266L275 315.3V324.3L284 315.3L293 306.3L284 297.3H293V288.3V270.3Z" stroke="#0000DC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Santany&#195;&#173;" d="M356 261.3L338 288.3L329 297.3H320L311 306.3L293 333.3H284V324.3H275L293 306.3L284 297.3H293V270.3H311L320 261.3H356Z" stroke="#0000DC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Felanitx" d="M293 198.3L302 207.3H320V216.3H329L338 225.3V234.3L365 243.3V252.3L356 261.3H338H320L311 270.3H293V243.3L284 234.3V225.3H293L302 216.3H293V198.3Z" stroke="#0000DC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Inca" d="M239 99.3L230 108.3H221L212 117.3V126.3H203L212 135.3H230H239H248V117.3H239L248 108.3L239 99.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Sineu" d="M248 135.3V162.3H257L266 171.3V162.3H275L284 153.3V144.3H266L248 135.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Sant Joan" d="M284 171.3L275 162.3H266V171.3H248L275 198.3H284V189.3L293 180.3L284 171.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Petra" d="M284 153.3L275 162.3L293 180.3H311V171.3V162.3L320 153.3V144.3L329 135.3H338L347 126.3H329H320V135.3L302 153.3H284Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Vilafranca " d="M293 180.3L284 189.3L293 198.3L302 207.3L311 198.3V180.3H293Z" stroke="#0000DC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Manacor_2" d="M338 135.3H347V144.3L338 153.3L347 162.3L356 171.3L365 180.3L374 171.3L383 180.3H392V189.3H383L374 198.3V207.3L365 216.3V225.3V234.3V243.3L338 234.3V225.3L329 216.3H320V207.3H302L311 198.3V162.3L320 153.3V144.3L329 135.3H338Z" stroke="#0000DC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Maria de la Salut" d="M275 126.3L266 144.3H284H302L311 135.3V126.3L302 135.3H293L284 126.3H275Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Ariany" d="M311 126.3V135.3L302 144.3H284V153.3H302L320 135.3V126.3H311Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Santa Margalida" d="M302 90.3L329 99.3L338 108.3L329 126.3H311L302 135.3H293L284 126.3H275L302 90.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Art&#195;&#160;" d="M374 72.3H383L392 90.3H401V99.3V108.3L392 117.3L401 126.3L392 135.3L383 126.3L374 135.3V144.3H365V135.3L356 126.3H347H329L338 108.3H347L374 90.3V81.3V72.3Z" stroke="#0000DC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Sant Lloren&#195;&#167; " d="M347 126.3H356L365 135.3V144.3H374L392 162.3L401 171.3L392 180.3H383L374 171.3L365 180.3L338 153.3L347 144.3V135.3H338L347 126.3Z" stroke="#0000DC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Capdepera" d="M419 99.3V108.3H428L419 117.3V135.3L410 144.3L401 135.3V126.3L392 117.3L401 108.3V90.3L419 99.3Z" stroke="#0000DC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Son Servera" d="M383 126.3L374 135.3V144.3L392 162.3L401 171.3V162.3V153.3L410 144.3L401 135.3V126.3L392 135.3L383 126.3Z" stroke="#0000DC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Palma" d="M131 153.3L140 162.3L131 171.3L140 180.3V189.3H149L158 180.3H176V171.3H185V180.3H194L203 189.3L194 198.3L185 207.3L176 216.3L167 225.3L158 216.3L149 207.3L140 198.3H131H122V207.3H113H104V198.3L95 189.3L104 180.3V171.3H95L104 162.3H122L131 153.3Z" stroke="#FF6DDC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Sencelles" d="M203 153.3V180.3L212 171.3H221H239V162.3L230 153.3V144.3V135.3H221L212 144.3V153.3H203Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Costitx" d="M248 135.3H239H230V144.3V153.3L239 162.3V153.3H248V135.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Muro" d="M293 72.3V81.3H302V90.3L275 126.3L266 117.3L257 108.3H266L275 99.3V90.3L284 81.3L293 72.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Llub&#195;&#173;" d="M248 135.3L266 144.3L275 126.3L257 108.3L248 117.3V135.3Z" stroke="#00B90F" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Marratx&#195;&#173;" d="M158 153.3H149L140 162.3L131 171.3L140 180.3V189.3H149L158 180.3H176V171.3V162.3L167 153.3H158Z" stroke="#008CF3" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Maria Sta" d="M167 153.3L176 162.3V171.3H185V162.3H194L185 153.3L176 144.3L158 126.3V153.3H167Z" stroke="#008CF3" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Eug&#195;&#168;nia" d="M203 153.3V180.3H185V162.3H194L203 153.3Z" stroke="#008CF3" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Montu&#195;&#175;ri" d="M248 171.3L257 180.3L266 189.3L275 198.3H266H257L248 207.3V198.3L239 189.3V180.3L248 171.3Z" stroke="#0000DC" stroke-width="0.5" stroke-miterlimit="10"/>
+        <path id="Porreres" d="M257 198.3L239 216.3L248 225.3V234.3L239 243.3H257L266 234.3H275L284 225.3H293L302 216.3H293V207.3V198.3L284 189.3V198.3H275H257Z" stroke="#0000DC" stroke-width="0.5" stroke-miterlimit="10"/>
+        </g>
+        </svg>
+        
+        
+        
+
+    <h2>As GeoJSON</h2>
+    <p>
+        <a href="" id="demolink">View on a map, as GeoJSON</a>
+    </p>
+
+<script>
+    var geoJson = svgtogeojson.svgToGeoJson([
+        [39.973988740278514,3.478188065952736],
+        [39.26566027102871,2.2765169440057775]
+    ], document.getElementById('mysvg'), 3);
+
+    document.getElementById('demolink').href = "http://geojson.io/#data=data:application/json," + encodeURIComponent(JSON.stringify(geoJson));
+</script>
+
+
+</body>
+
+
+</html>

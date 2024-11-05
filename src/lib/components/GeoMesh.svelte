@@ -89,7 +89,7 @@
     const bufferGeometry = new THREE.BufferGeometry()
 
     const positions = new Float32Array(vertices.flatMap(([x, y]) => {
-      const z = (properties?.height || 0) * heightScale
+      const z = 10
       return [x, y, z]
     }))
 

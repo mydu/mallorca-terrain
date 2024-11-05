@@ -8,7 +8,9 @@
   export let geojson;
   export let width;
   export let height;
-  console.log(width,height)
+
+  console.log(width/height)
+
   // Complex GeoJSON example with multiple geometry types
   const sampleGeoJSON = {
     "type": "FeatureCollection",
@@ -31,35 +33,35 @@
           ]]
         }
       },
-      // {
-      //   "type": "Feature",
-      //   "properties": {
-      //     "name": "Simple Polygon",
-      //     "height": 1,
-      //     "color": "#ff0000"
-      //   },
-      //   "geometry": {
-      //     "type": "Polygon",
-      //    "coordinates": [[
-      //     [
-      //       2.727809861,
-      //       9.82338978807184
-      //   ],
-      //   [
-      //       2.736496045,
-      //       9.816390349071874
-      //   ],
-      //   [
-      //       2.740015358,
-      //       9.806406143071946
-      //   ],
-      //   [
-      //       2.727809861,
-      //       9.82338978807184
-      //   ],
-      //     ]]
-      //     }
-      //   },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Simple Polygon",
+          "height": 1,
+          "color": "#ff0000"
+        },
+        "geometry": {
+          "type": "Polygon",
+         "coordinates": [[
+          [
+            2.727809861,
+            9.82338978807184
+        ],
+        [
+            2.736496045,
+            9.816390349071874
+        ],
+        [
+            2.740015358,
+            9.806406143071946
+        ],
+        [
+            2.727809861,
+            9.82338978807184
+        ],
+          ]]
+          }
+        },
       // {
       //   "type": "Feature",
       //   "properties": {
@@ -95,9 +97,9 @@
 
   // Setup D3 projection
   $: projection = d3.geoMercator()
-      // .translate([0,0])
+      .translate([0,0])
+      // .translate([width/2, height/2])
       .scale(100)
-    .translate([width/2, height/2])
     // .scale([100]);
 
   // $: path = d3.geoPath().projection(projection)
@@ -119,7 +121,7 @@
 
 <T.PerspectiveCamera
   makeDefault
-  position={[10,10, 90]} fov={3}
+  position={[45,1.5, 90]} fov={3}
 >
   <OrbitControls 
     enableZoom={true} />

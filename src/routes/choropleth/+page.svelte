@@ -1,8 +1,22 @@
 <script>
     import { MapLibre, GeoJSON, FillExtrusionLayer} from 'svelte-maplibre';
-    import mallorca from '$data/mallorcaPop.json';
+    import mallorca from '$data/mallorcaPopChoro.json';
     let selectedYear = 2023;
+
+    const style = {
+        version: 8,
+        name: 'Empty',
+        sources: {},
+        layers: [{
+            id: 'background',
+            type: 'background',
+            paint: {
+                'background-color': '#ffffff'  // or any color you prefer
+            }
+        }]
+    }
 </script>
+
 <div class="m-auto relative z-10 w-60">
   <input
     type="range"
@@ -14,7 +28,7 @@
   <p>{selectedYear}</p>
 </div>
 <MapLibre
-  style="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+  style={style}
   class=""
   standardControls
   pitch={30}
