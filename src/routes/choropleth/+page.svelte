@@ -1,5 +1,5 @@
 <script>
-    import { MapLibre, GeoJSON, FillExtrusionLayer} from 'svelte-maplibre';
+    import { MapLibre, GeoJSON, FillExtrusionLayer, Popup} from 'svelte-maplibre';
     import mallorca from '$data/mallorcaPopChoro.json';
     let selectedYear = 2023;
 
@@ -63,15 +63,15 @@
       }}
       beforeLayerType="symbol"
     >
-      <!-- <Popup openOn="hover" let:data>
+      <Popup openOn="hover" let:data>
         {@const props = data?.properties}
         {#if props}
           <div class="flex flex-col gap-2">
-            <div class="text-lg font-bold">{props.NAME}</div>
-            <p>Population: {props.POPESTIMATE2020}</p>
+            <div class="text-lg font-bold">{props.mun_name}</div>
+            <p>Population in {selectedYear}: {props[selectedYear]}</p>
           </div>
         {/if}
-      </Popup> -->
+      </Popup>
     </FillExtrusionLayer>
   </GeoJSON>
 </MapLibre>

@@ -49,13 +49,12 @@
                     type: 'Polygon',
                     coordinates:[createBarPolygon(p.properties.geo_point_2d.lon,p.properties.geo_point_2d.lat, 0)]
                 },
-                properties: {...p.properties, superficie: data.filter(d=>p.properties.code==d.code).reduce((acc, curr) => {
+                properties: {...p.properties, ...data.filter(d=>p.properties.code==d.code).reduce((acc, curr) => {
                     acc[curr.monthString] = curr.total;
                     return acc;
                 }, {})}
             }))
-        }
-           
+        }           
         $: superficieIndustrial=  {
             type: 'FeatureCollection',
             features: mallorca.features.map(p => ({
@@ -64,7 +63,7 @@
                     type: 'Polygon',
                     coordinates: [createBarPolygon(p.properties.geo_point_2d.lon,p.properties.geo_point_2d.lat, -0.02)]
                 },
-                properties: {...p.properties, superficie: data.filter(d=>p.properties.code==d.code).reduce((acc, curr) => {
+                properties: {...p.properties, ...data.filter(d=>p.properties.code==d.code).reduce((acc, curr) => {
                     acc[curr.monthString] = curr.industrial;
                     return acc;
                 }, {})}
@@ -80,7 +79,7 @@
                     type: 'Polygon',
                     coordinates: [createBarPolygon(p.properties.geo_point_2d.lon,p.properties.geo_point_2d.lat, 0.02)]
                 },
-                properties: {...p.properties, superficie: data.filter(d=>p.properties.code==d.code).reduce((acc, curr) => {
+                properties: {...p.properties, ...data.filter(d=>p.properties.code==d.code).reduce((acc, curr) => {
                     acc[curr.monthString] = curr.residential;
                     return acc;
                 }, {})}
@@ -98,7 +97,7 @@
             bind:value={selectedIndex}
             class="w-full"
             />
-            <p>{ d3.timeFormat('%Y-%m-%d')(months[selectedIndex])}</p>
+            <p>{d3.timeFormat('%Y-%m-%d')(months[selectedIndex])}</p>
     </div>
 
     <MapLibre
@@ -122,8 +121,6 @@
                 'fill-extrusion-height': [
                     'get',
                         ['string', ['to-string', d3.timeFormat('%Y-%m-%d')(months[selectedIndex])]],
-                        ['get', 'superficie']
-                    
                 ],                // 'fill-extrusion-height': [
                 //     'match',
                 //     ['get', 'monthString', ['get', 'superficie']],
@@ -156,6 +153,7 @@
                     {#if props}
                     <div class="flex flex-col gap-2">
                         <div class="text-lg font-bold">{props.name}</div>
+                        <p>total in {d3.timeFormat('%Y-%m-%d')(months[selectedIndex])}: {props[d3.timeFormat('%Y-%m-%d')(months[selectedIndex])]}</p>
                     </div>
                     {/if}
                 </Popup>
@@ -167,9 +165,7 @@
                     
                 'fill-extrusion-height': [
                     'get',
-                        ['string', ['to-string', d3.timeFormat('%Y-%m-%d')(months[selectedIndex])]],
-                        ['get', 'superficie']
-                    
+                        ['string', ['to-string', d3.timeFormat('%Y-%m-%d')(months[selectedIndex])]],                    
                 ],                // 'fill-extrusion-height': [
                 //     'match',
                 //     ['get', 'monthString', ['get', 'superficie']],
@@ -199,9 +195,11 @@
                 </div> -->
                 <Popup openOn="hover" let:data>
                     {@const props = data?.properties}
+
                     {#if props}
                     <div class="flex flex-col gap-2">
                         <div class="text-lg font-bold">{props.name}</div>
+                        <p>residential in {d3.timeFormat('%Y-%m-%d')(months[selectedIndex])}: {props[d3.timeFormat('%Y-%m-%d')(months[selectedIndex])]}</p>
                     </div>
                     {/if}
                 </Popup>
@@ -213,9 +211,7 @@
                     
                 'fill-extrusion-height': [
                     'get',
-                        ['string', ['to-string', d3.timeFormat('%Y-%m-%d')(months[selectedIndex])]],
-                        ['get', 'superficie']
-                    
+                        ['string', ['to-string', d3.timeFormat('%Y-%m-%d')(months[selectedIndex])]],                    
                 ],                // 'fill-extrusion-height': [
                 //     'match',
                 //     ['get', 'monthString', ['get', 'superficie']],
@@ -248,6 +244,7 @@
                     {#if props}
                     <div class="flex flex-col gap-2">
                         <div class="text-lg font-bold">{props.name}</div>
+                        <p>industrial in {d3.timeFormat('%Y-%m-%d')(months[selectedIndex])}: {props[d3.timeFormat('%Y-%m-%d')(months[selectedIndex])]}</p>
                     </div>
                     {/if}
                 </Popup>
